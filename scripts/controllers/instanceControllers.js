@@ -37,9 +37,14 @@
 		//To guide to basic options page
 		$rootScope.setOptions = function(id) {
 			if( !isLoggedIn(id))
+			{
 				showLoginMsg();
+			}
+				
 			else
+			{
 				window.location.assign("basicSettings.html?i="+id);
+			}	
 		};
 		
 		//To guide to mappings page

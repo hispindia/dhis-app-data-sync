@@ -8,7 +8,11 @@
 				{
 					$rootScope.setting = JSON.parse(response.data.value);
 					logInToAllInstance( $rootScope, $http ); //coded in login.js
-				}				
+				}
+				else
+                {
+                    $("#coverLoad").hide();
+                }				
 		});
 	}
 	
