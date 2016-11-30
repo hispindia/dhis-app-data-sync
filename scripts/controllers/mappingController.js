@@ -289,6 +289,8 @@ function getInstanceDataElementGroup( optionList, instanceID )
 // ***************************************************************************************************
 // ***************************************************************************************************
 
+var allOptions = "";
+
 function buildMapInputs($rootScope)
 {
 	var options = $rootScope.setting.basicOptions;
@@ -298,12 +300,13 @@ function buildMapInputs($rootScope)
 	var nationalPeriodTypes = $rootScope.nationalPeriodTypes;
 	var htmlStr = ""; // Table structure
 
-	var allOptions = generateAllOptions($rootScope);
+	allOptions = generateAllOptions($rootScope);
 
 	nationalDE.forEach(function(nDE) {
 		if( nDE.categoryCombo.categoryOptionCombos.length == 0 )
 		{
 			htmlStr += "<tr>";
+			htmlStr += "<td> <input type='checkbox' /> </td>";
 			htmlStr += "<td  id='"+nDE.id+"_td' style='text-align:left;padding-left:30px' title='"+nDE.name+"'>"+nDE.name+"</td>";
 			htmlStr += "<td>";
 			htmlStr += "<select id="+nDE.id+"> <option value='-1'> -- select -- </option>";
@@ -384,9 +387,10 @@ function buildMapInputs($rootScope)
 				var selectBoxId = nDE.id + "-" + coc.id;
 
 				htmlStr += "<tr>";
+				htmlStr += "<td> <input id='check_"+selectBoxId+"' type='checkbox' onclick='enableAllOptions(this,allOptions)'/> </td>";
 				htmlStr += "<td  id='"+selectBoxId+"_td' style='text-align:left;padding-left:30px' title='"+title+"'>"+tdText+"</td>";
 				htmlStr += "<td>";
-				htmlStr += "<select id="+selectBoxId+"> <option value='-1'> -- select -- </option>";
+				htmlStr += "<select id="+selectBoxId+" onChange='removeAllOptions(this)'> <option value='-1'> -- select -- </option>";
 
 				var isMapped = false;
 
@@ -592,4 +596,25 @@ function generateAllOptions($rootScope){
 	});
 
 	return allOptions;
+}
+
+function enableAllOptions(thiss,allOptions){
+	console.log(thiss);
+	console.log(thiss.id);
+
+	var selectBoxID = thiss.id.substring(6);
+	$("#"+selectBoxID+"").empty().append(allOptions);
+
+	document.getElementById(thiss.id).checked = !document.getElementById(thiss.id).checked;
+}
+
+function removeAllOptions(thiss){
+	console.log(thiss);
+	console.log(thiss.id);
+	console.log(thiss.selectedOptions[0].value);
+	console.log(thiss.selectedOptions[0].text);
+
+	selectedOption = "<option value='"+thiss.selectedOptions[0].value+"' selected>"+thiss.selectedOptions[0].text+"</option>"
+
+	$("#"+thiss.id+"").empty().append(selectedOption);
 }
